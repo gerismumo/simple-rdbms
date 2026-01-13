@@ -1,10 +1,13 @@
+import { parseCreateTable } from "./create-table.parse";
+
 export function createSQLParser() {
   function execute(sql: string) {
     try {
-      const startQuery = sql.trim().toUpperCase();
+      const trimmed = sql.trim();
+      const startQuery = trimmed.toUpperCase();
 
       if (startQuery.startsWith("CREATE TABLE")) {
-        console.log("create table here");
+        return parseCreateTable(trimmed);
       } else if (startQuery.startsWith("INSERT INTO")) {
         console.log("insert table here");
       } else {
