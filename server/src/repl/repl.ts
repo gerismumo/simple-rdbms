@@ -1,5 +1,6 @@
 import * as readline from "readline";
 import { showHelp } from "./show-help";
+import { createSQLParser } from "../parser/sql.parser";
 
 export function startREPL(): void {
   const rl = readline.createInterface({
@@ -16,7 +17,7 @@ export function startREPL(): void {
 
   rl.prompt();
 
-  
+
 //   rl.on("history", (history) => {
 //     console.log(`Received: ${history}`);
 //   });
@@ -46,6 +47,9 @@ export function startREPL(): void {
 
     //excute the sql commands here 
 
+     const parser = createSQLParser();
+     const result = parser.execute(input);
+     console.log("result", result);
     // console.log(`You typed: "${input}"`);
 
     console.log();
