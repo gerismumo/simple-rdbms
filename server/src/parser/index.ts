@@ -1,5 +1,6 @@
 import { DatabaseData, QueryResult } from "../core/types";
 import { executeCreateTable } from "./commands/create";
+import { executeShowDatabases } from "./commands/info";
 
 export function executeSQL(
   currentDb: DatabaseData | null,
@@ -9,6 +10,22 @@ export function executeSQL(
   try {
     const trimmed = sql.trim();
     const upperSQL = trimmed.toUpperCase();
+
+    if (upperSQL.startsWith("SHOW DATABASES")) {
+      return executeShowDatabases(databases);
+    }
+
+    if (
+      !currentDb &&
+      !upperSQL.startsWith("CREATE DATABASE") &&
+      !upperSQL.startsWith("USE")
+    ) {
+      return {
+        success: false,
+        message:
+          'No database selected. Use "USE <database>" or "CREATE DATABASE <name>"',
+      };
+    }
 
     //sql commandss
     if (upperSQL.startsWith("CREATE TABLE")) {
