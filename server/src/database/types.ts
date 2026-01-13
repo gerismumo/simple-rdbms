@@ -2,8 +2,7 @@ export enum DataType {
   INTEGER = 'INTEGER',
   VARCHAR = 'VARCHAR',
   BOOLEAN = 'BOOLEAN',
-  FLOAT = 'FLOAT',
-  TEXT= 'TEXT'
+  FLOAT = 'FLOAT'
 }
 
 export interface ColumnDefinition {
@@ -33,4 +32,16 @@ export interface QueryResult {
   message?: string;
   rows?: Row[];
   rowCount?: number;
+}
+
+export interface TableData {
+  schema: TableSchema;
+  rows: Row[];
+  indexes: Map<string, Index>;
+  nextId: number;
+}
+
+export interface DatabaseData {
+  name: string;
+  tables: Map<string, TableData>;
 }

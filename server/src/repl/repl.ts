@@ -3,6 +3,8 @@ import { showHelp } from "./show-help";
 import { createSQLParser } from "../parser/sql.parser";
 
 export function startREPL(): void {
+
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -47,9 +49,16 @@ export function startREPL(): void {
 
     //excute the sql commands here 
 
-     const parser = createSQLParser();
-     const result = parser.execute(input);
-     console.log("result", result);
+     try {
+      const parser = createSQLParser();
+      const result = parser.execute(input);
+
+     console.log("result", result)
+    } catch (err) {
+      console.error(
+        err instanceof Error ? err.message : "Unknown error"
+      );
+    }
     // console.log(`You typed: "${input}"`);
 
     console.log();

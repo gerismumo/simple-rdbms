@@ -1,19 +1,35 @@
 import * as dotenv from "dotenv";
 import path from "path";
-dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
-function required(name: string, value?: string): string {
+function loadEnv() {
+  const NODE_ENV = process.env.NODE_ENV ?? "development";
+
+  const envFiles = [".env", `.env.${NODE_ENV}`, ".env.local"];
+
+  for (const file of envFiles) {
+    dotenv.config({
+      path: path.resolve(__dirname, "../../../", file),
+      override: false,
+    });
+  }
+
+  return NODE_ENV;
+}
+
+const NODE_ENV = loadEnv();
+
+function required(name: string): string {
+  const value = process.env[name];
   if (!value) {
-    console.error(`Missing required environment variable: ${name}`);
-    process.exit(1);
+    throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
 }
 
 export const ENV = {
+  NODE_ENV,
   HOST_NAME: process.env.HOST_NAME || "localhost",
-  PORT: parseInt(required("PORT", process.env.PORT), 10),
+  PORT: parseInt(required("PORT"), 10),
   BASE_URL: process.env.BASE_URL || `http://localhost:${process.env.PORT}`,
-  NODE_ENV: required("NODE_ENV", process.env.NODE_ENV),
   // JWT_SECRET: required("JWT_SECRET", process.env.JWT_SECRET),
 } as const;
