@@ -22,6 +22,8 @@ export function createNewDatabase(state: REPLState, name: string): void {
 
   const db = createDatabase(name);
   state.databases.set(name, db);
-  saveDatabase(db, state.basePath);
+  console.log("db", db)
+  console.log("basePath", state.basePath)
+//   saveDatabase(db, state.basePath);
   console.log(`✓ Database '${name}' created`);
 }
