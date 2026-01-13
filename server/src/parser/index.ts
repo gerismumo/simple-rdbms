@@ -1,6 +1,7 @@
 import { DatabaseData, QueryResult } from "../core/types";
 import { executeCreateTable } from "./commands/create";
 import { executeShowDatabases } from "./commands/info";
+import { executeInsertRow } from "./commands/insert";
 
 export function executeSQL(
   currentDb: DatabaseData | null,
@@ -30,6 +31,8 @@ export function executeSQL(
     //sql commandss
     if (upperSQL.startsWith("CREATE TABLE")) {
       return executeCreateTable(currentDb!, trimmed);
+    } else if (upperSQL.startsWith("INSERT INTO")) {
+      return executeInsertRow(currentDb!, trimmed);
     } else {
       return {
         success: false,

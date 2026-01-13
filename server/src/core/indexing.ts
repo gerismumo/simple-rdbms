@@ -34,3 +34,19 @@ export function createAutoIndexes(
 
   return indexes;
 }
+
+export function updateIndexOnInsert(
+  indexes: Map<string, Index>,
+  row: Row,
+  rowIndex: number
+): void {
+  indexes.forEach(index => {
+    const value = row[index.columnName];
+    if (value !== undefined && value !== null) {
+      if (!index.values.has(value)) {
+        index.values.set(value, []);
+      }
+      index.values.get(value)!.push(rowIndex);
+    }
+  });
+}

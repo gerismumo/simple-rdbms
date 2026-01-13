@@ -1,5 +1,11 @@
-import { buildIndexFromRows, createAutoIndexes, createIndex } from "./indexing";
+import {
+  buildIndexFromRows,
+  createAutoIndexes,
+  createIndex,
+  updateIndexOnInsert,
+} from "./indexing";
 import { Row, TableData, TableSchema } from "./types";
+import { checkUniqueContraintsVal, validateRow } from "./validation";
 
 export function createTable(schema: TableSchema): TableData {
   return {
@@ -25,5 +31,18 @@ export function addIndex(
 }
 
 export function insertRow(tableData: TableData, row: Row): void {
+  validateRow(row, tableData.schema.columns, true);
+  checkUniqueContraintsVal(row, tableData.rows, tableData.schema.columns);
 
+  const primaryKeyCol = tableData.schema.columns.find((c) => c.primaryKey);
+
+  if (primaryKeyCol && row[primaryKeyCol.name] === undefined) {
+    row[primaryKeyCol.name] = tableData.nextId++;
+  }
+
+  const rowIndex = tableData.rows.length;
+
+  tableData.rows.push({ ...row });
+
+  updateIndexOnInsert(tableData.indexes, row, rowIndex);
 }

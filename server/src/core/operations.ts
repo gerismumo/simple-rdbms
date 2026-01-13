@@ -1,5 +1,5 @@
 import { getTable } from "./database";
-import { addIndex } from "./table";
+import { addIndex, insertRow } from "./table";
 import { DatabaseData } from "./types";
 
 export function createIndexOn(
@@ -10,4 +10,13 @@ export function createIndexOn(
 ): void {
   const table = getTable(db, tableName);
   addIndex(table, columnName, unique);
+}
+
+export function insert(
+  db: DatabaseData,
+  tableName: string,
+  row: Record<string, any>
+): void {
+  const table = getTable(db, tableName);
+  insertRow(table, row);
 }
