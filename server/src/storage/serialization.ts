@@ -1,5 +1,5 @@
 import { createDatabase, createTable } from "../core/database";
-import { insertRow } from "../core/table";
+import { addIndex, insertRow } from "../core/table";
 import { DatabaseData, TableData } from "../core/types";
 
 export interface SerializedDatabase {
@@ -61,7 +61,7 @@ function deserializeTable(
     insertRow(table, row);
   });
 
-  const { addIndex } = require("../core/table");
+
   tableData.indexes.forEach((indexName: string) => {
     const col = table.schema.columns.find((c) => c.name === indexName);
     if (col && !col.primaryKey && !col.unique) {

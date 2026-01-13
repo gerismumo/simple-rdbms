@@ -9,10 +9,7 @@ export function createIndex(columnName: string, unique: boolean): Index {
   };
 }
 
-export function buildIndexFromRows(
-  index: Index,
-  rows: Row[]
-): void {
+export function buildIndexFromRows(index: Index, rows: Row[]): void {
   rows.forEach((row, idx) => {
     const value = row[index.columnName];
     if (value !== undefined && value !== null) {

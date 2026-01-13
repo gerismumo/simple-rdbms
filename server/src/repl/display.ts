@@ -46,8 +46,8 @@ export function displayBanner(): void {
   console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║              MyRDBMS - Interactive Database Shell              ║
-║              Functional Relational Database System             ║
+║              Gerald's RDBMS - Interactive Database Shell      ║
+║              Functional Relational Database System            ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 

@@ -22,11 +22,11 @@ export function createTable(db: DatabaseData, schema: TableSchema): void {
 }
 
 //get table
-
 export function getTable(db: DatabaseData, tableName: string): TableData {
   const table = db.tables.get(tableName);
   if (!table) {
     throw new Error(`Table ${tableName} does not exist`);
   }
+
   return table;
 }
