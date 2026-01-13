@@ -1,32 +1,5 @@
-import {
-  ColumnDefinition,
-  Index,
-  TableData,
-  TableSchema,
-} from "./types";
-
-//create unique and primary index
-export function createIndex(columnName: string, unique: boolean): Index {
-  return {
-    columnName,
-    unique,
-    values: new Map(),
-  };
-}
-
-export function createAutoIndexes(
-  columns: ColumnDefinition[]
-): Map<string, Index> {
-  const indexes = new Map<string, Index>();
-
-  columns.forEach((col) => {
-    if (col.primaryKey || col.unique) {
-      indexes.set(col.name, createIndex(col.name, true));
-    }
-  });
-
-  return indexes;
-}
+import { buildIndexFromRows, createAutoIndexes, createIndex } from "./indexing";
+import { TableData, TableSchema } from "./types";
 
 export function createTable(schema: TableSchema): TableData {
   return {
@@ -35,4 +8,18 @@ export function createTable(schema: TableSchema): TableData {
     indexes: createAutoIndexes(schema.columns),
     nextId: 1,
   };
+}
+
+export function addIndex(
+  tableData: TableData,
+  columnName: string,
+  unique: boolean
+): void {
+  if (tableData.indexes.has(columnName)) {
+    throw new Error(`Index already exists on column ${columnName}`);
+  }
+
+  const index = createIndex(columnName, unique);
+  buildIndexFromRows(index, tableData.rows);
+  tableData.indexes.set(columnName, index);
 }

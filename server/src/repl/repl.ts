@@ -1,6 +1,6 @@
 import * as readline from "readline";
 import { showHelp } from "./show-help";
-import { createSQLParser } from "../parser/sql.parser";
+import { createSQLParser } from "../parser";
 
 export function startREPL(): void {
 

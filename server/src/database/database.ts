@@ -1,4 +1,4 @@
-import { DatabaseData, TableSchema } from "./types";
+import { DatabaseData, TableData, TableSchema } from "./types";
 import { createTable as createTableHelper } from "./table";
 
 export function createDatabase(name: string): DatabaseData {
@@ -19,4 +19,14 @@ export function createTable(db: DatabaseData, schema: TableSchema): void {
   }
 
   db.tables.set(schema.name, createTableHelper(schema));
+}
+
+//get table
+
+export function getTable(db: DatabaseData, tableName: string): TableData {
+  const table = db.tables.get(tableName);
+  if (!table) {
+    throw new Error(`Table ${tableName} does not exist`);
+  }
+  return table;
 }
