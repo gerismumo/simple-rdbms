@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development nodemon ./src/server.ts",
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "build": "tsc",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "repl":"ts-node ./src/repl/index.ts"
   },
   "keywords": [],
   "author": "",
