@@ -1,5 +1,5 @@
-import { createIndexOn } from "../../database/operations";
-import { DatabaseData, QueryResult } from "../../database/types";
+import { createIndexOn } from "../../core/operations";
+import { DatabaseData, QueryResult } from "../../core/types";
 
 export function executeCreateIndex(db: DatabaseData, sql: string): QueryResult {
   const match = sql.match(

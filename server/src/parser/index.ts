@@ -1,4 +1,4 @@
-import { DatabaseData, QueryResult } from "../database/types";
+import { DatabaseData, QueryResult } from "../core/types";
 import { executeCreateTable } from "./commands/create";
 
 export function executeSQL(

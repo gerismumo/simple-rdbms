@@ -1,10 +1,10 @@
-import { createTable } from "../../database/database";
+import { createTable } from "../../core/database";
 import {
   ColumnDefinition,
   DatabaseData,
   DataType,
   QueryResult,
-} from "../../database/types";
+} from "../../core/types";
 
 export function parseCreateDatabase(sql: string): { dbName: string } {
   const match = sql.match(/CREATE DATABASE\s+(\w+)/i);
