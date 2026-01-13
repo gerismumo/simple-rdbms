@@ -1,10 +1,17 @@
 import * as readline from "readline";
-import { createREPLState } from "./db-state";
+import { createREPLState, loadExistingDatabases } from "./db-state";
 import { displayBanner, displayHelp } from "./display";
 import { handleCommand } from "./handlers";
+import { initStorage } from "../storage/persistence";
 
 export function startREPL(basePath: string = "./data"): void {
+  initStorage(basePath);
+
   const state = createREPLState(basePath);
+
+  console.log("state", state);
+
+  loadExistingDatabases(state);
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -13,7 +20,7 @@ export function startREPL(basePath: string = "./data"): void {
   });
 
   displayBanner();
-  
+
   rl.prompt();
 
   //   rl.on("history", (history) => {

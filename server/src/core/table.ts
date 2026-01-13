@@ -1,5 +1,5 @@
 import { buildIndexFromRows, createAutoIndexes, createIndex } from "./indexing";
-import { TableData, TableSchema } from "./types";
+import { Row, TableData, TableSchema } from "./types";
 
 export function createTable(schema: TableSchema): TableData {
   return {
@@ -22,4 +22,8 @@ export function addIndex(
   const index = createIndex(columnName, unique);
   buildIndexFromRows(index, tableData.rows);
   tableData.indexes.set(columnName, index);
+}
+
+export function insertRow(tableData: TableData, row: Row): void {
+
 }
