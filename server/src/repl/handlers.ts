@@ -5,6 +5,7 @@ import {
   saveCurrentDatabase,
   switchDatabase,
 } from "./db-state";
+import { displayTable } from "./display";
 
 export function handleCommand(state: REPLState, input: string): boolean {
   const upperInput = input.toUpperCase().trim();
@@ -46,7 +47,7 @@ export function handleCommand(state: REPLState, input: string): boolean {
 
   if (result.success) {
     if (result.rows) {
-      console.log("rows", result.rows);
+      displayTable(result.rows);
     }
     if (result.message) {
       console.log(`${result.message}`);
@@ -66,8 +67,6 @@ export function handleCommand(state: REPLState, input: string): boolean {
       upperInput.includes("DROP TABLE")
     ) {
       saveCurrentDatabase(state);
-
-      
     }
   } else {
     console.log(`Error: ${result.message}`);

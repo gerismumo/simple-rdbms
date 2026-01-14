@@ -59,3 +59,33 @@ export function displayBanner(): void {
 Type 'help' for available commands or 'exit' to quit
   `);
 }
+
+
+export function displayTable(rows: Record<string, any>[]): void {
+  if (rows.length === 0) {
+    console.log('(no rows)');
+    return;
+  }
+
+  const columns = Object.keys(rows[0]);
+  const columnWidths = columns.map(col => {
+    const maxValueLength = Math.max(
+      ...rows.map(row => String(row[col] ?? '').length)
+    );
+    return Math.max(col.length, maxValueLength) + 2;
+  });
+
+  const header = columns.map((col, i) => 
+    col.padEnd(columnWidths[i])
+  ).join(' | ');
+  
+  console.log(header);
+  console.log(columnWidths.map(w => '─'.repeat(w)).join('─┼─'));
+
+  rows.forEach(row => {
+    const rowStr = columns.map((col, i) => 
+      String(row[col] ?? 'NULL').padEnd(columnWidths[i])
+    ).join(' | ');
+    console.log(rowStr);
+  });
+}
