@@ -1,4 +1,4 @@
-import { DatabaseData } from "../../../core/types";
+import { DatabaseData } from "../../core/types";
 
 export interface DatabaseServiceState {
   databases: Map<string, DatabaseData>;

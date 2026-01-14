@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createDatabasesController } from "./databases.controller";
-import { DatabaseServiceState } from "./types";
+import { DatabaseServiceState } from "../../shared/types/database";
+
 
 export default function databasesRoutes(state: DatabaseServiceState) {
   const router = Router();

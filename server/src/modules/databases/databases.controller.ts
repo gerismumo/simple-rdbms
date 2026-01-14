@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { DatabasesService } from "./databases.service";
 import { CreateDatabaseSchema } from "./dto/create-database.dto";
 import { UseDatabaseSchema } from "./dto/use-database.dto";
-import { DatabaseServiceState } from "./types";
+import { DatabaseServiceState } from "../../shared/types/database";
 
 export const createDatabasesController = (state: DatabaseServiceState) => {
   const create = async (req: Request, res: Response, next: NextFunction) => {

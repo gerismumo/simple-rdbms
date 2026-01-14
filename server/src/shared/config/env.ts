@@ -31,5 +31,5 @@ export const ENV = {
   HOST_NAME: process.env.HOST_NAME || "localhost",
   PORT: parseInt(required("PORT"), 10),
   BASE_URL: process.env.BASE_URL || `http://localhost:${process.env.PORT}`,
-  // JWT_SECRET: required("JWT_SECRET", process.env.JWT_SECRET),
+  DATA_PATH: process.env.DATA_PATH || "./data",
 } as const;

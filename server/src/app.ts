@@ -6,8 +6,14 @@ import modules from './modules';
 import { responseHandler } from './shared/middlewares/responseHandler';
 import path from 'path';
 import { errorHandler } from './shared/middlewares/errorHandler';
+import { DatabaseServiceState } from './shared/types/database';
+import { DatabaseData } from './core/types';
 
-const app = express();
+export function createApp(
+  state: DatabaseServiceState,
+  getCurrentDb: () => DatabaseData | null
+) {
+  const app = express();
 
 
 app.use(helmet());
@@ -18,7 +24,7 @@ app.use(responseHandler);
 app.use("/", express.static(path.join(__dirname, "../public")));
 
 
-app.use('/api/v1', modules());
+app.use('/api/v1', modules(state, getCurrentDb));
 
 app.get('/', (_req, res) => res.json({ ok: true}))
 
@@ -36,4 +42,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorHandler);
 
-export default app;
+return  app;
+}
+
+

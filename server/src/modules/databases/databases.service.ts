@@ -1,13 +1,12 @@
 import { createDatabase } from "../../core/database";
 import { DatabaseData } from "../../core/types";
+import { DatabaseServiceState } from "../../shared/types/database";
 import {
   saveDatabase,
   loadDatabase,
   listAllDatabases,
 } from "../../storage/persistence";
 import { CreateDatabaseDto } from "./dto/create-database.dto";
-import { DatabaseServiceState } from "./types";
-
 
 
 export const DatabasesService = {
