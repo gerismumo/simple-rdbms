@@ -3,6 +3,7 @@ import { executeCreateTable, executeDropTable } from "./commands/create";
 import { executeShowDatabases } from "./commands/info";
 import { executeInsertRow } from "./commands/insert";
 import { executeSelect } from "./commands/select";
+import { executeUpdate } from "./commands/update";
 
 export function executeSQL(
   currentDb: DatabaseData | null,
@@ -38,6 +39,8 @@ export function executeSQL(
       return executeInsertRow(currentDb!, trimmed);
     } else if (upperSQL.startsWith("SELECT")) {
       return executeSelect(currentDb!, trimmed);
+    }  else if (upperSQL.startsWith('UPDATE')) {
+      return executeUpdate(currentDb!, trimmed);
     } else {
       return {
         success: false,

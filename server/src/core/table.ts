@@ -2,6 +2,7 @@ import {
   buildIndexFromRows,
   createAutoIndexes,
   createIndex,
+  updateIndexOnDelete,
   updateIndexOnInsert,
 } from "./indexing";
 import { Row, TableData, TableSchema } from "./types";
@@ -83,4 +84,25 @@ export function selectRows(
   return tableData.rows.filter((row) =>
     matchesConditions(row, normalizedConditions)
   );
+}
+
+
+export function updateRows(
+  tableData: TableData,
+  conditions: Record<string, any>,
+  updates: Record<string, any>
+): number {
+  const rowsToUpdate = selectRows(tableData, conditions);
+  
+  rowsToUpdate.forEach(row => {
+    const rowIndex = tableData.rows.indexOf(row);
+    
+    updateIndexOnDelete(tableData.indexes, row, rowIndex);
+    Object.assign(row, updates);
+    validateRow(row, tableData.schema.columns, false);
+    checkUniqueContraintsVal(row, tableData.rows, tableData.schema.columns, rowIndex);
+    updateIndexOnInsert(tableData.indexes, row, rowIndex);
+  });
+
+  return rowsToUpdate.length;
 }

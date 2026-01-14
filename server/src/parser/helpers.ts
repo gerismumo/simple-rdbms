@@ -60,3 +60,20 @@ export function parseWhere(whereStr: string): Record<string, any> {
   return conditions;
 }
 
+
+export function parseSet(setStr: string): Record<string, any> {
+  const updates: Record<string, any> = {};
+  const parts = setStr.split(',');
+  
+  parts.forEach(part => {
+    const match = part.match(/(\w+)\s*=\s*(.+)/);
+    if (match) {
+      const column = match[1].trim();
+      const value = parseValue(match[2].trim().replace(/^['"]|['"]$/g, ''));
+      updates[column] = value;
+    }
+  });
+
+  return updates;
+}
+

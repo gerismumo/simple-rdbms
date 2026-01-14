@@ -40,13 +40,35 @@ export function updateIndexOnInsert(
   row: Row,
   rowIndex: number
 ): void {
-  indexes.forEach(index => {
+  indexes.forEach((index) => {
     const value = row[index.columnName];
     if (value !== undefined && value !== null) {
       if (!index.values.has(value)) {
         index.values.set(value, []);
       }
       index.values.get(value)!.push(rowIndex);
+    }
+  });
+}
+
+export function updateIndexOnDelete(
+  indexes: Map<string, Index>,
+  row: Row,
+  rowIndex: number
+): void {
+  indexes.forEach((index) => {
+    const value = row[index.columnName];
+    if (value !== undefined && value !== null) {
+      const indices = index.values.get(value);
+      if (indices) {
+        const pos = indices.indexOf(rowIndex);
+        if (pos !== -1) {
+          indices.splice(pos, 1);
+        }
+        if (indices.length === 0) {
+          index.values.delete(value);
+        }
+      }
     }
   });
 }
