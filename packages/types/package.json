@@ -1,0 +1,6 @@
+{
+  "name": "@repo/types",
+  "version": "0.0.1",
+  "private": true,
+  "types": "src/index.ts"
+}
