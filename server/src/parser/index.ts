@@ -1,4 +1,5 @@
 import { DatabaseData, QueryResult } from "../core/types";
+import { executeCreateIndex } from "./commands";
 import { executeCreateTable, executeDropTable } from "./commands/create";
 import { executeDelete } from "./commands/delete";
 import {
@@ -48,6 +49,8 @@ export function executeSQL(
       return executeUpdate(currentDb!, trimmed);
     } else if (upperSQL.startsWith("DELETE FROM")) {
       return executeDelete(currentDb!, trimmed);
+    }else if (upperSQL.startsWith('CREATE INDEX')) {
+      return executeCreateIndex(currentDb!, trimmed);
     } else if (upperSQL.startsWith("SHOW TABLES")) {
       return executeShowTables(currentDb!);
     } else if (upperSQL.startsWith("DESCRIBE")) {
