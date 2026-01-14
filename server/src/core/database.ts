@@ -21,6 +21,13 @@ export function createTable(db: DatabaseData, schema: TableSchema): void {
   db.tables.set(schema.name, createTableHelper(schema));
 }
 
+export function dropTable(db: DatabaseData, tableName: string): void {
+  if (!db.tables.has(tableName)) {
+    throw new Error(`Table ${tableName} does not exist`);
+  }
+  db.tables.delete(tableName);
+}
+
 //get table
 export function getTable(db: DatabaseData, tableName: string): TableData {
   const table = db.tables.get(tableName);

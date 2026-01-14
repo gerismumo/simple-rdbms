@@ -1,5 +1,5 @@
 import { DatabaseData, QueryResult } from "../core/types";
-import { executeCreateTable } from "./commands/create";
+import { executeCreateTable, executeDropTable } from "./commands/create";
 import { executeShowDatabases } from "./commands/info";
 import { executeInsertRow } from "./commands/insert";
 import { executeSelect } from "./commands/select";
@@ -32,6 +32,8 @@ export function executeSQL(
     //sql commandss
     if (upperSQL.startsWith("CREATE TABLE")) {
       return executeCreateTable(currentDb!, trimmed);
+    }else if (upperSQL.startsWith('DROP TABLE')) {
+      return executeDropTable(currentDb!, trimmed);
     } else if (upperSQL.startsWith("INSERT INTO")) {
       return executeInsertRow(currentDb!, trimmed);
     } else if (upperSQL.startsWith("SELECT")) {

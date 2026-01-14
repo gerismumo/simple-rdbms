@@ -1,4 +1,4 @@
-import { createTable } from "../../core/database";
+import { createTable, dropTable } from "../../core/database";
 import {
   ColumnDefinition,
   DatabaseData,
@@ -62,5 +62,21 @@ export function executeCreateTable(db: DatabaseData, sql: string): QueryResult {
   return {
     success: true,
     message: `Table ${tableName} created successfully in database ${db.name}`,
+  };
+}
+
+export function executeDropTable(db: DatabaseData, sql: string): QueryResult {
+  const match = sql.match(/DROP TABLE\s+(\w+)/i);
+  if (!match) {
+    throw new Error("Invalid DROP TABLE syntax");
+  }
+
+  const tableName = match[1];
+
+  dropTable(db, tableName);
+
+  return {
+    success: true,
+    message: `Table ${tableName} dropped successfully`,
   };
 }
