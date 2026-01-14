@@ -1,9 +1,14 @@
-import { Router } from 'express';
+import { Router } from "express";
+import databasesModule from "./databases";
+import { DatabaseData } from "../core/types";
+import { DatabaseServiceState } from "./databases/types";
 
-export default function modules() {
+export default function modules(
+  state: DatabaseServiceState,
+  getCurrentDb: () => DatabaseData | null
+) {
   const router = Router();
-  // router.use('/auth',authModule());
-  // router.use('/users', usersModule());
-  
+  router.use("/databases", databasesModule(state));
+
   return router;
 }
