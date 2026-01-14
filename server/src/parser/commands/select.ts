@@ -16,16 +16,12 @@ export function executeSelect(db: DatabaseData, sql: string): QueryResult {
     throw new Error("Invalid SELECT syntax");
   }
 
-  console.log("match", match);
-
   const selectPart = match[1].trim();
   const tableName = match[2];
   const wherePart = match[3];
 
-  console.log("parseWhere(wherePart)", parseWhere(wherePart))
-
   let rows = wherePart
-    ? select(db, tableName, {id:'1'})
+    ? select(db, tableName, parseWhere(wherePart))
     : select(db, tableName);
 
   if (selectPart !== "*") {

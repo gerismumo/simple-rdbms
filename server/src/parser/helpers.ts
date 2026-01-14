@@ -44,7 +44,9 @@ export function parseValues(valuesStr: string): any[] {
 
 export function parseWhere(whereStr: string): Record<string, any> {
   const conditions: Record<string, any> = {};
-  const parts = whereStr.split(/\s+AND\s+/i);
+  const cleanWhere = whereStr.replace(/;\s*$/, '');
+
+  const parts = cleanWhere.split(/\s+AND\s+/i);
   
   parts.forEach(part => {
     const match = part.match(/(\w+)\s*=\s*(.+)/);
