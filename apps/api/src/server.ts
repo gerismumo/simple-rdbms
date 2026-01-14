@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, {Express, Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import requestLogger from "./shared/middlewares/requestLogger";
@@ -12,7 +12,7 @@ import { DatabaseData } from "./core/types";
 export function createApp(
   state: DatabaseServiceState,
   getCurrentDb: () => DatabaseData | null
-) {
+): Express {
   const app = express();
 
   app.use(helmet());

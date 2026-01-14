@@ -1,10 +1,10 @@
 import { ENV } from "./shared/config/env";
-import { createApp } from "./app";
 import { initState } from "./bootstrap/initState";
 import { registerShutdown } from "./bootstrap/shutdown";
 import { APP_CONSTANTS } from "./shared/config/constant";
 import { DatabaseData } from "./core/types";
 import { DatabasesService } from "./modules/databases/databases.service";
+import { createApp } from "./server";
 
 async function server() {
   const state = await initState(ENV.DATA_PATH);
