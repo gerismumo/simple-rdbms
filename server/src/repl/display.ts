@@ -43,6 +43,7 @@ Example Workflow:
   INSERT INTO orders (user_id, product, price) VALUES (1, 'Laptop', 1200.50);
   SELECT users.id, users.name, orders.product, orders.price FROM users INNER JOIN orders ON users.id = orders.user_id WHERE users.id = 1;
   UPDATE orders SET price = 1100.00 WHERE id = 1;
+  DELETE FROM orders WHERE id = 1;
   `);
 }
 

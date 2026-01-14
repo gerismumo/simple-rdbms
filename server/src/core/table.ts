@@ -106,3 +106,22 @@ export function updateRows(
 
   return rowsToUpdate.length;
 }
+
+
+export function deleteRows(
+  tableData: TableData,
+  conditions: Record<string, any>
+): number {
+  const rowsToDelete = selectRows(tableData, conditions);
+  let deleteCount = 0;
+
+  for (let i = tableData.rows.length - 1; i >= 0; i--) {
+    if (rowsToDelete.includes(tableData.rows[i])) {
+      updateIndexOnDelete(tableData.indexes, tableData.rows[i], i);
+      tableData.rows.splice(i, 1);
+      deleteCount++;
+    }
+  }
+
+  return deleteCount;
+}

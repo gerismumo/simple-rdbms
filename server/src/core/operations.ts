@@ -1,5 +1,5 @@
 import { getTable } from "./database";
-import { addIndex, insertRow, selectRows, updateRows } from "./table";
+import { addIndex, deleteRows, insertRow, selectRows, updateRows } from "./table";
 import { DatabaseData } from "./types";
 
 export function createIndexOn(
@@ -39,4 +39,13 @@ export function update(
 ): number {
   const table = getTable(db, tableName);
   return updateRows(table, conditions, updates);
+}
+
+export function deleteFrom(
+  db: DatabaseData,
+  tableName: string,
+  conditions: Record<string, any>
+): number {
+  const table = getTable(db, tableName);
+  return deleteRows(table, conditions);
 }

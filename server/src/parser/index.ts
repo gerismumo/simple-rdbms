@@ -1,5 +1,6 @@
 import { DatabaseData, QueryResult } from "../core/types";
 import { executeCreateTable, executeDropTable } from "./commands/create";
+import { executeDelete } from "./commands/delete";
 import { executeShowDatabases } from "./commands/info";
 import { executeInsertRow } from "./commands/insert";
 import { executeSelect } from "./commands/select";
@@ -41,6 +42,8 @@ export function executeSQL(
       return executeSelect(currentDb!, trimmed);
     }  else if (upperSQL.startsWith('UPDATE')) {
       return executeUpdate(currentDb!, trimmed);
+    } else if (upperSQL.startsWith('DELETE FROM')) {
+      return executeDelete(currentDb!, trimmed);
     } else {
       return {
         success: false,
