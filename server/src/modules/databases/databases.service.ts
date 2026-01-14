@@ -10,7 +10,6 @@ import { CreateDatabaseDto } from "./dto/create-database.dto";
 
 
 export const DatabasesService = {
-
   async create(
     state: DatabaseServiceState,
     dto: CreateDatabaseDto

@@ -32,11 +32,6 @@ export function createApp(
     next(error);
   });
 
-  // app.use(function onError(req: Request, res: any, next: NextFunction) {
-  //   res.statusCode = 500;
-  //   res.end(res.sentry + "\n");
-  // });
-
   app.use(errorHandler);
 
   return app;

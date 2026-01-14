@@ -23,13 +23,16 @@ export function parseUseDatabase(sql: string): { dbName: string } {
 }
 
 export function executeCreateTable(db: DatabaseData, sql: string): QueryResult {
-  const match = sql.match(/CREATE TABLE\s+(\w+)\s*\((.*)\)/i);
+   const match = sql.match(/CREATE TABLE\s+(IF NOT EXISTS\s+)?(\w+)\s*\(([\s\S]+)\)/i);
   if (!match) {
     throw new Error("Invalid CREATE TABLE syntax");
   }
 
-  const tableName = match[1];
-  const columnDefs = match[2].split(",").map((def) => def.trim());
+   const tableName = match[2];
+  const columnDefs = match[3]
+    .split(",")
+    .map((def) => def.trim())
+    .filter(Boolean)
 
   const columns: ColumnDefinition[] = columnDefs.map((def) => {
     const parts = def.split(/\s+/);
