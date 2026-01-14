@@ -1,3 +1,7 @@
+import HomePage from "../components/Home/Shell";
+
 export default function Home() {
-  return <h1>Hello</h1>;
+  return (
+    <HomePage />
+  )
 }
