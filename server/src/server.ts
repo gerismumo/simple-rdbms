@@ -104,14 +104,16 @@ DatabasesService.loadAll(state).then(() => {
 
       Server:     http://${ENV.HOST_NAME}:${ENV.PORT}                       
       API:        http://${ENV.HOST_NAME}:${ENV.PORT}/api/v1             
-      Data Path:  ${ENV.DATA_PATH.padEnd(43)} ║
+      Data Path:  ${ENV.DATA_PATH.padEnd(43)} 
       Database:   ${(currentDatabase?.name || "none").padEnd(43)} 
       Tables:     ${
-          currentDatabase ? Array.from(currentDatabase.tables.keys()).length : 0
-        } 
+        currentDatabase ? Array.from(currentDatabase.tables.keys()).length : 0
+      } 
                                                             
       Environment:   ${ENV.NODE_ENV.padEnd(43)} 
-      Databases:     ${state.databases.size} loaded                               
+      Databases:     ${
+        state.databases.size
+      } loaded                               
       Server ready to accept connections
     `);
   });
