@@ -1,5 +1,5 @@
 import { getTable } from "./database";
-import { addIndex, insertRow } from "./table";
+import { addIndex, insertRow, selectRows } from "./table";
 import { DatabaseData } from "./types";
 
 export function createIndexOn(
@@ -19,4 +19,13 @@ export function insert(
 ): void {
   const table = getTable(db, tableName);
   insertRow(table, row);
+}
+
+export function select(
+  db: DatabaseData,
+  tableName: string,
+  conditions?: Record<string, any>
+): Record<string, any>[] {
+  const table = getTable(db, tableName);
+  return selectRows(table, conditions);
 }

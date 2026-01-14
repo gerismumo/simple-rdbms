@@ -11,8 +11,6 @@ export function executeInsertRow(db: DatabaseData, sql: string): QueryResult {
     throw new Error("Invalid INSERT syntax");
   }
 
-  console.log("match", match);
-
   const tableName = match[1];
   const columns = match[2].split(",").map((c) => c.trim());
   const values = parseValues(match[3]);

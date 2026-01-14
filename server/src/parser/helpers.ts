@@ -41,3 +41,20 @@ export function parseValues(valuesStr: string): any[] {
 
   return values;
 }
+
+export function parseWhere(whereStr: string): Record<string, any> {
+  const conditions: Record<string, any> = {};
+  const parts = whereStr.split(/\s+AND\s+/i);
+  
+  parts.forEach(part => {
+    const match = part.match(/(\w+)\s*=\s*(.+)/);
+    if (match) {
+      const column = match[1];
+      const value = parseValue(match[2].replace(/^['"]|['"]$/g, ''));
+      conditions[column] = value;
+    }
+  });
+
+  return conditions;
+}
+
