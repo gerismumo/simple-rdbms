@@ -39,6 +39,9 @@ Example Workflow:
   CREATE TABLE users (id INTEGER PRIMARY KEY, name VARCHAR(100), email VARCHAR(255) UNIQUE);
   INSERT INTO users (name, email) VALUES ('Alice', 'alice@example.com');
   SELECT * FROM users WHERE id = 1;
+  CREATE TABLE orders (id INTEGER PRIMARY KEY, user_id INTEGER, product VARCHAR(100), price FLOAT);
+  INSERT INTO orders (user_id, product, price) VALUES (1, 'Laptop', 1200.50);
+  SELECT users.id, users.name, orders.product, orders.price FROM users INNER JOIN orders ON users.id = orders.user_id WHERE users.id = 1;
   `);
 }
 

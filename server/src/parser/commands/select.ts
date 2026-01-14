@@ -1,3 +1,4 @@
+import { innerJoin } from "../../core/database";
 import { select } from "../../core/operations";
 import { DatabaseData, QueryResult } from "../../core/types";
 import { parseWhere } from "../helpers";
@@ -8,7 +9,31 @@ export function executeSelect(db: DatabaseData, sql: string): QueryResult {
   );
 
   if (joinMatch) {
-    console.log("joinMatch", joinMatch);
+    const selectPart = joinMatch[1].trim();
+    const leftTable = joinMatch[2];
+    const rightTable = joinMatch[3];
+    const leftColumn = joinMatch[5];
+    const rightColumn = joinMatch[7];
+
+    const selectColumns =
+      selectPart === "*"
+        ? undefined
+        : selectPart.split(",").map((c) => c.trim());
+
+    const rows = innerJoin(
+      db,
+      leftTable,
+      rightTable,
+      leftColumn,
+      rightColumn,
+      selectColumns
+    );
+
+    return {
+      success: true,
+      rows,
+      rowCount: rows.length,
+    };
   }
 
   const match = sql.match(/SELECT\s+(.+?)\s+FROM\s+(\w+)(?:\s+WHERE\s+(.+))?/i);
