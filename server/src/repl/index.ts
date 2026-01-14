@@ -9,8 +9,6 @@ export function startREPL(basePath: string = "./data"): void {
 
   const state = createREPLState(basePath);
 
-  console.log("state", state);
-
   loadExistingDatabases(state);
 
   const rl = readline.createInterface({
@@ -39,7 +37,7 @@ export function startREPL(basePath: string = "./data"): void {
     }
 
     if (!input) {
-      rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "mydb> ");
+      rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "gerald@mydb> ");
       rl.prompt();
       console.log("command not found");
       return;
@@ -47,7 +45,7 @@ export function startREPL(basePath: string = "./data"): void {
 
     if (input.toLowerCase() === "help") {
       displayHelp();
-      rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "mydb> ");
+      rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "gerald@mydb> ");
       rl.prompt();
       return;
     }
@@ -56,7 +54,7 @@ export function startREPL(basePath: string = "./data"): void {
     handleCommand(state, input);
 
     console.log();
-    rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "mydb> ");
+    rl.setPrompt(state.currentDb ? `${state.currentDb.name}> ` : "gerald@mydb> ");
     rl.prompt();
   });
 
