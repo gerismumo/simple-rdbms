@@ -23,6 +23,7 @@ import { useAppStore } from "../../store/useAppStore";
 import { tablesApi } from "../../lib/api/tables";
 import toast from "react-hot-toast";
 import { useTables } from "../../lib/hook/useTable";
+import { useRouter } from "next/navigation";
 
 interface TableListProps {
   onViewSchema: (tableName: string) => void;
@@ -31,6 +32,7 @@ interface TableListProps {
 export function TableList({ onViewSchema }: TableListProps) {
   const { data, isLoading, mutate } = useTables();
   const { currentDatabase } = useAppStore();
+  const router = useRouter();
 
   const handleDelete = (tableName: string) => {
     modals.openConfirmModal({
@@ -51,6 +53,7 @@ export function TableList({ onViewSchema }: TableListProps) {
           });
           if (response.success) {
             toast.success(response.message || "Table dropped successfully");
+            router.refresh();
             mutate();
           }
         } catch (error: any) {

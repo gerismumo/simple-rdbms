@@ -23,6 +23,7 @@ import { DatabaseList } from "../Databases/DatabaseList";
 import { useAppStore } from "../../store/useAppStore";
 import { CreateDatabaseModal } from "../Databases/CreateDatabaseModal";
 import { Database } from "../../types/api";
+import { useTables } from "../../lib/hook/useTable";
 
 interface AppShellLayoutProps {
   children: React.ReactNode;
@@ -41,6 +42,9 @@ export function AppShellLayout({
   const [opened, { toggle }] = useDisclosure();
   const [createDbOpened, setCreateDbOpened] = useState(false);
   const { currentDatabase } = useAppStore();
+  const { data:tables, isLoading, mutate } = useTables();
+
+  console.log("data tables", tables)
 
   const navItems = [
     { label: "Query Console", icon: IconTerminal, value: "query" },

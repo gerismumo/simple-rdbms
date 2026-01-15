@@ -30,7 +30,7 @@ export const useTables = () => {
   );
 
   return {
-    data,        
+    data: data ? data : [],        
     error,       
     isLoading,   
     mutate,
