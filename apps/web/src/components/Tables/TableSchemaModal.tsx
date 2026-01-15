@@ -5,6 +5,7 @@ import { Modal, Table, Loader, Text, Stack, Badge, Group } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { TableSchema } from "../../types/api";
 import { tablesApi } from "../../lib/api/tables";
+import { useAppStore } from "../../store/useAppStore";
 
 interface TableSchemaModalProps {
   opened: boolean;
@@ -17,6 +18,7 @@ export function TableSchemaModal({
   onClose,
   tableName,
 }: TableSchemaModalProps) {
+  const { currentDatabase } = useAppStore();
   const [schema, setSchema] = useState<TableSchema | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +33,10 @@ export function TableSchemaModal({
 
     setLoading(true);
     try {
-      const response = await tablesApi.getSchema(tableName);
+      const response = await tablesApi.getSchema({
+        name: tableName,
+        db: currentDatabase as string,
+      });
       if (response.success && response.data) {
         setSchema(response.data);
       }
