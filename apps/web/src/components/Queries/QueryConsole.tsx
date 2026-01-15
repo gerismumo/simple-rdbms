@@ -232,15 +232,18 @@ export function QueryConsole() {
               -- Create table{"\n"}
               CREATE TABLE users (id INTEGER PRIMARY KEY, name VARCHAR(100),
               email VARCHAR(255) UNIQUE);
-            </Code>
-            <Code block style={{ fontSize: "12px" }}>
-              -- Select all rows{"\n"}
-              SELECT * FROM users;
+              CREATE TABLE orders (id INTEGER PRIMARY KEY, user_id INTEGER, product VARCHAR(100), price FLOAT);
             </Code>
             <Code block style={{ fontSize: "12px" }}>
               -- Insert new row{"\n"}
               INSERT INTO users (name, email) VALUES ('Alice',
               'alice@example.com');
+               INSERT INTO orders (user_id, product, price) VALUES (1, 'Laptop', 1200.50);
+            </Code>
+            <Code block style={{ fontSize: "12px" }}>
+              -- Select all rows{"\n"}
+              SELECT * FROM users;
+              SELECT * FROM orders;
             </Code>
             <Code block style={{ fontSize: "12px" }}>
               -- Update rows{"\n"}
@@ -252,9 +255,7 @@ export function QueryConsole() {
             </Code>
             <Code block style={{ fontSize: "12px" }}>
               -- Join tables{"\n"}
-              SELECT users.name, orders.amount{"\n"}
-              FROM users{"\n"}
-              INNER JOIN orders ON users.id = orders.user_id;
+               SELECT users.id, users.name, orders.product, orders.price FROM users INNER JOIN orders ON users.id = orders.user_id;;
             </Code>
           </Stack>
         </Stack>

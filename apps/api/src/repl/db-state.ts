@@ -15,8 +15,6 @@ export interface REPLState {
 export function loadExistingDatabases(state: REPLState): void {
   const dbNames = listAllDatabases(state.basePath);
 
-  console.log("dbNames", dbNames);
-
   dbNames.forEach((name) => {
     const db = loadDatabase(name, state.basePath);
     if (db) {
