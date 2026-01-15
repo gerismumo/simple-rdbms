@@ -2,13 +2,13 @@ import { CreateTableDto, Table, TableSchema } from "../../types/api";
 import { apiClient } from "../api-client";
 
 export const tablesApi = {
-  getAll: () => apiClient.get<Table[]>("/tables"),
+  getAll: (db: string) => apiClient.get<Table[]>(`/tables/${db}`),
 
-  create: (data: CreateTableDto) =>
-    apiClient.post<{ name: string; columns: number }>("/tables", data),
+  create: ({data, db}:{data: CreateTableDto, db: string}) =>
+    apiClient.post<{ name: string; columns: number }>(`/tables/${db}`, data),
 
-  getSchema: (name: string) =>
-    apiClient.get<TableSchema>(`/tables/${name}/schema`),
+  getSchema: ({name, db}:{name: string; db: string}) =>
+    apiClient.get<TableSchema>(`/tables/${db}/${name}/schema`),
 
-  drop: (name: string) => apiClient.delete(`/tables/${name}`),
+  drop: ({name, db}:{name: string, db: string}) => apiClient.delete(`/tables/${db}/${name}`),
 };

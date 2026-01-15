@@ -19,6 +19,7 @@ import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { ColumnDefinition } from '../../types/api';
 import { tablesApi } from '../../lib/api/tables';
 import toast from 'react-hot-toast';
+import { useAppStore } from '../../store/useAppStore';
 
 
 interface CreateTableModalProps {
@@ -28,6 +29,7 @@ interface CreateTableModalProps {
 }
 
 export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModalProps) {
+   const {  currentDatabase } = useAppStore();
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -56,7 +58,7 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     try {
-      const response = await tablesApi.create(values);
+      const response = await tablesApi.create({data:values, db:currentDatabase as string});
       if (response.success) {
         toast.success(response.message || 'Table created successfully');
         form.reset();

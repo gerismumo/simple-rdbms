@@ -37,7 +37,7 @@ export function TableList({ onViewSchema }: TableListProps) {
   const loadTables = async () => {
     setLoading('tables', true);
     try {
-      const response = await tablesApi.getAll();
+      const response = await tablesApi.getAll(currentDatabase as string);
       if (response.success && response.data) {
         setTables(response.data);
       }
@@ -62,7 +62,7 @@ export function TableList({ onViewSchema }: TableListProps) {
       confirmProps: { color: 'red' },
       onConfirm: async () => {
         try {
-          const response = await tablesApi.drop(tableName);
+          const response = await tablesApi.drop({name:tableName, db:currentDatabase as string});
           if (response.success) {
             toast.success(response.message || 'Table dropped successfully');
             loadTables();
