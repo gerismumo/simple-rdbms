@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Modal,
   TextInput,
@@ -13,36 +13,34 @@ import {
   Switch,
   Card,
   Text,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { ColumnDefinition } from '../../types/api';
-import { tablesApi } from '../../lib/api/tables';
-import toast from 'react-hot-toast';
-import { useAppStore } from '../../store/useAppStore';
-import { useTables } from '../../lib/hook/useTable';
-import { useRouter } from 'next/navigation';
-
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { ColumnDefinition } from "../../types/api";
+import { tablesApi } from "../../lib/api/tables";
+import toast from "react-hot-toast";
+import { useAppStore } from "../../store/useAppStore";
+import { useTables } from "../../lib/hook/useTable";
+import { useRouter } from "next/navigation";
 
 interface CreateTableModalProps {
   opened: boolean;
   onClose: () => void;
-  onSuccess: () => void;
 }
 
-export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModalProps) {
-   const {  currentDatabase } = useAppStore();
+export function CreateTableModal({ opened, onClose }: CreateTableModalProps) {
+  const { currentDatabase } = useAppStore();
   const [loading, setLoading] = useState(false);
-  const {mutate} = useTables()
-  const router = useRouter()
+  const { mutate } = useTables();
+  const router = useRouter();
 
   const form = useForm({
     initialValues: {
-      name: '',
+      name: "",
       columns: [
         {
-          name: 'id',
-          type: 'INTEGER' as const,
+          name: "id",
+          type: "INTEGER" as const,
           primaryKey: true,
           unique: false,
           nullable: false,
@@ -51,10 +49,10 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
       ] as ColumnDefinition[],
     },
     validate: {
-      name: (value) => (!value ? 'Table name is required' : null),
+      name: (value) => (!value ? "Table name is required" : null),
       columns: {
-        name: (value) => (!value ? 'Column name is required' : null),
-        type: (value) => (!value ? 'Column type is required' : null),
+        name: (value) => (!value ? "Column name is required" : null),
+        type: (value) => (!value ? "Column type is required" : null),
       },
     },
   });
@@ -62,26 +60,28 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     try {
-      const response = await tablesApi.create({data:values, db:currentDatabase as string});
+      const response = await tablesApi.create({
+        data: values,
+        db: currentDatabase as string,
+      });
       if (response.success) {
-        toast.success(response.message || 'Table created successfully');
+        toast.success(response.message || "Table created successfully");
         form.reset();
-        mutate()
-        router.refresh()
-        onSuccess();
+        mutate();
+        router.refresh();
         onClose();
       }
     } catch (error: any) {
-      toast.error( error.message || 'Failed to create table')
+      toast.error(error.message || "Failed to create table");
     } finally {
       setLoading(false);
     }
   };
 
   const addColumn = () => {
-    form.insertListItem('columns', {
-      name: '',
-      type: 'VARCHAR' as const,
+    form.insertListItem("columns", {
+      name: "",
+      type: "VARCHAR" as const,
       primaryKey: false,
       unique: false,
       nullable: true,
@@ -90,18 +90,24 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
   };
 
   const removeColumn = (index: number) => {
-    form.removeListItem('columns', index);
+    form.removeListItem("columns", index);
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Create New Table" centered size="lg">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Create New Table"
+      centered
+      size="lg"
+    >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           <TextInput
             label="Table Name"
             placeholder="users"
             required
-            {...form.getInputProps('name')}
+            {...form.getInputProps("name")}
           />
 
           <div>
@@ -109,7 +115,12 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
               <Text size="sm" fw={500}>
                 Columns
               </Text>
-              <Button size="xs" variant="light" leftSection={<IconPlus size={16} />} onClick={addColumn}>
+              <Button
+                size="xs"
+                variant="light"
+                leftSection={<IconPlus size={16} />}
+                onClick={addColumn}
+              >
                 Add Column
               </Button>
             </Group>
@@ -126,13 +137,13 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
                       />
                       <Select
                         placeholder="Type"
-                        data={['INTEGER', 'VARCHAR', 'BOOLEAN', 'FLOAT']}
+                        data={["INTEGER", "VARCHAR", "BOOLEAN", "FLOAT"]}
                         required
                         {...form.getInputProps(`columns.${index}.type`)}
                       />
                     </Group>
 
-                    {column.type === 'VARCHAR' && (
+                    {column.type === "VARCHAR" && (
                       <NumberInput
                         label="Max Length"
                         placeholder="255"
@@ -145,16 +156,20 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
                       <Switch
                         label="Primary Key"
                         {...form.getInputProps(`columns.${index}.primaryKey`, {
-                          type: 'checkbox',
+                          type: "checkbox",
                         })}
                       />
                       <Switch
                         label="Unique"
-                        {...form.getInputProps(`columns.${index}.unique`, { type: 'checkbox' })}
+                        {...form.getInputProps(`columns.${index}.unique`, {
+                          type: "checkbox",
+                        })}
                       />
                       <Switch
                         label="Nullable"
-                        {...form.getInputProps(`columns.${index}.nullable`, { type: 'checkbox' })}
+                        {...form.getInputProps(`columns.${index}.nullable`, {
+                          type: "checkbox",
+                        })}
                       />
                     </Group>
 

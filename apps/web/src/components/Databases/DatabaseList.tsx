@@ -8,15 +8,11 @@ import {
   ActionIcon,
   Stack,
   Badge,
-  Button,
-  Loader,
-  Box,
 } from "@mantine/core";
 import {
   IconDatabase,
   IconTrash,
   IconCheck,
-  IconRefresh,
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useAppStore } from "../../store/useAppStore";
@@ -77,15 +73,7 @@ export function DatabaseList({ databases }: { databases: Database[] }) {
         <Text size="lg" fw={600}>
           Databases
         </Text>
-        {/* <ActionIcon
-          variant="light"
-          onClick={loadDatabases}
-          disabled={localLoading}
-        >
-          <IconRefresh size={18} />
-        </ActionIcon> */}
       </Group>
-
       {databases.length === 0 ? (
         <Card withBorder>
           <Text c="dimmed" size="sm" ta="center">

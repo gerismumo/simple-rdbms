@@ -12,11 +12,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconDatabase,
-  IconTable,
-  IconTerminal,
-} from "@tabler/icons-react";
+import { IconDatabase, IconTable, IconTerminal } from "@tabler/icons-react";
 
 import { DatabaseList } from "../Databases/DatabaseList";
 import { useAppStore } from "../../store/useAppStore";

@@ -24,7 +24,7 @@ export interface TableSchema {
 export interface TableRows {
   name: string;
   columns: Column[];
-  rows: any[];
+  rows: Record<string, any>[];
 }
 
 export interface Column {
@@ -51,4 +51,9 @@ export interface ColumnDefinition {
 export interface QueryResult {
   rows?: any[];
   rowCount?: number;
+}
+
+export interface TableRowsResponse {
+  columns: Column[];
+  rows: Record<string, any>[];
 }

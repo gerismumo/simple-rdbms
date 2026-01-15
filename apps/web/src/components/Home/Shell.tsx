@@ -60,9 +60,6 @@ export default function HomePage({ databases }: { databases: Database[] }) {
       <CreateTableModal
         opened={createTableOpened}
         onClose={() => setCreateTableOpened(false)}
-        onSuccess={() => {
-          // Tables will reload via useEffect
-        }}
       />
       <TableSchemaModal
         opened={schemaModalOpened}

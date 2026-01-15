@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Modal, Table, Loader, Text, Stack, Badge, Group } from "@mantine/core";
 import { TableSchema } from "../../types/api";
 import { tablesApi } from "../../lib/api/tables";
 import { useAppStore } from "../../store/useAppStore";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 
 interface TableSchemaModalProps {
   opened: boolean;
@@ -13,39 +13,38 @@ interface TableSchemaModalProps {
   tableName: string | null;
 }
 
+const fetchTableSchema = async (
+  [_key, db, table]: [string, string, string]
+): Promise<TableSchema> => {
+  const response = await tablesApi.getSchema({ name: table, db });
+
+  if (!response.success || !response.data) {
+    throw new Error(response.message || "Failed to load table schema");
+  }
+
+  return response.data;
+};
+
 export function TableSchemaModal({
   opened,
   onClose,
   tableName,
 }: TableSchemaModalProps) {
   const { currentDatabase } = useAppStore();
-  const [schema, setSchema] = useState<TableSchema | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (opened && tableName) {
-      loadSchema();
+  const { data: schema, error, isLoading } = useSWR<TableSchema, Error>(
+    opened && tableName && currentDatabase
+      ? ["table-schema", currentDatabase, tableName]
+      : null,
+    fetchTableSchema,
+    {
+      revalidateOnFocus: false,
     }
-  }, [opened, tableName]);
+  );
 
-  const loadSchema = async () => {
-    if (!tableName) return;
-
-    setLoading(true);
-    try {
-      const response = await tablesApi.getSchema({
-        name: tableName,
-        db: currentDatabase as string,
-      });
-      if (response.success && response.data) {
-        setSchema(response.data);
-      }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to load table schema");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (error) {
+    toast.error(error.message);
+  }
 
   return (
     <Modal
@@ -55,7 +54,7 @@ export function TableSchemaModal({
       centered
       size="lg"
     >
-      {loading ? (
+      {isLoading ? (
         <Stack align="center" p="xl">
           <Loader size="md" />
         </Stack>

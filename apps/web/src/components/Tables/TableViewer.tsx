@@ -15,47 +15,50 @@ import {
   Flex,
 } from "@mantine/core";
 import { IconEye, IconTrash } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
 import { useAppStore } from "../../store/useAppStore";
 import { tablesApi } from "../../lib/api/tables";
-import { Column } from "../../types/api";
+import { TableRowsResponse } from "../../types/api";
 import toast from "react-hot-toast";
 import { modals } from "@mantine/modals";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
 
 interface TableListProps {
   onViewSchema: (tableName: string) => void;
 }
 
+const fetchTableRows = async ([_key, db, table]: [
+  string,
+  string,
+  string,
+]): Promise<TableRowsResponse> => {
+  const res = await tablesApi.getRows({
+    db,
+    name: table,
+  });
+
+  if (!res.success || !res.data) {
+    throw new Error(res.message || "Failed to load table data");
+  }
+
+  return res.data;
+};
 export function TableViewer({ onViewSchema }: TableListProps) {
   const { currentDatabase, selectedTable } = useAppStore();
-  const [data, setData] = useState<any[]>([]);
-  const [columns, setColumns] = useState<Column[]>([]);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!selectedTable) return;
+  const { data, error, isLoading, mutate } = useSWR<TableRowsResponse, Error>(
+    currentDatabase && selectedTable
+      ? ["table-rows", currentDatabase, selectedTable]
+      : null,
+    fetchTableRows,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
-    const loadTable = async () => {
-      setLoading(true);
-      try {
-        const res = await tablesApi.getRows({
-          db: currentDatabase!,
-          name: selectedTable,
-        });
-
-        if (res.success) {
-          setColumns(res?.data?.columns || []);
-          setData(res?.data?.rows || []);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTable();
-  }, [selectedTable]);
+  const columns = data?.columns ?? [];
+  const rows = data?.rows ?? [];
 
   const handleDelete = (tableName: string) => {
     modals.openConfirmModal({
@@ -76,8 +79,8 @@ export function TableViewer({ onViewSchema }: TableListProps) {
           });
           if (response.success) {
             toast.success(response.message || "Table dropped successfully");
+            mutate();
             router.refresh();
-            //   mutate();
           }
         } catch (error: any) {
           toast.error(error.message || "Failed to drop table");
@@ -96,6 +99,16 @@ export function TableViewer({ onViewSchema }: TableListProps) {
     );
   }
 
+  if (error) {
+    return (
+      <Card withBorder>
+        <Text c="red" ta="center">
+          {error.message}
+        </Text>
+      </Card>
+    );
+  }
+
   return (
     <Stack gap="md">
       <Group justify="space-between">
@@ -103,7 +116,7 @@ export function TableViewer({ onViewSchema }: TableListProps) {
           <Text fw={600} size="lg">
             {selectedTable}
           </Text>
-          <Badge variant="light">{data.length} rows</Badge>
+          <Badge variant="light">{rows.length} rows</Badge>
         </Group>
         <Group gap="xs">
           <Button
@@ -126,9 +139,9 @@ export function TableViewer({ onViewSchema }: TableListProps) {
         </Group>
       </Group>
       <Card withBorder>
-        {loading ? (
+        {isLoading ? (
           <Loader />
-        ) : data.length === 0 ? (
+        ) : rows.length === 0 ? (
           <Text c="dimmed" ta="center">
             No data available , please execute the insert query on the query
             console
@@ -151,7 +164,7 @@ export function TableViewer({ onViewSchema }: TableListProps) {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {data.map((row, i) => (
+                {rows.map((row, i) => (
                   <Table.Tr key={i}>
                     {columns.map((col) => (
                       <Table.Td key={col.name}>{row[col.name]}</Table.Td>
