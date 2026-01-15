@@ -11,7 +11,6 @@ import { deserializeDatabase, serializeDatabase } from "./serialization";
 
 export function initStorage(basePath: string): void {
   existsDirectory(basePath);
-  existsDirectory(path.join(basePath, "backups"));
 }
 
 export function listAllDatabases(basePath: string): string[] {
@@ -20,7 +19,6 @@ export function listAllDatabases(basePath: string): string[] {
 
   return files
     .map((f) => f.replace(".json", ""))
-    .filter((name) => name !== "backups");
 }
 
 export function saveDatabase(db: DatabaseData, basePath: string): void {

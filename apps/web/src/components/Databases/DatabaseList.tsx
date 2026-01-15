@@ -1,19 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Card,
-  Text,
-  Group,
-  ActionIcon,
-  Stack,
-  Badge,
-} from "@mantine/core";
-import {
-  IconDatabase,
-  IconTrash,
-  IconCheck,
-} from "@tabler/icons-react";
+import { Card, Text, Group, ActionIcon, Stack, Badge } from "@mantine/core";
+import { IconDatabase, IconTrash, IconCheck } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { useAppStore } from "../../store/useAppStore";
 import { databasesApi } from "../../lib/api/databases";
@@ -22,7 +10,6 @@ import { Database } from "../../types/api";
 import { useRouter } from "next/navigation";
 
 export function DatabaseList({ databases }: { databases: Database[] }) {
-  console.log("DatabaseList data:", databases);
   const router = useRouter();
 
   const { currentDatabase, setCurrentDatabase } = useAppStore();
