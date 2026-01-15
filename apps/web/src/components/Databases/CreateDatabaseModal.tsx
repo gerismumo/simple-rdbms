@@ -49,7 +49,7 @@ export function CreateDatabaseModal({ opened, onClose, onSuccess }: CreateDataba
         
       }
     } catch (error: any) {
-      toast.error( error.error || 'Failed to create database')
+      toast.error( error.message || 'Failed to create database')
     } finally {
       setLoading(false);
     }

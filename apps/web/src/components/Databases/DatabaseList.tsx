@@ -39,7 +39,7 @@ export function DatabaseList({ databases }: { databases: Database[] }) {
         toast.success(response.message || `Switched to ${dbName}`);
       }
     } catch (error: any) {
-      toast.error(error.error || "Failed to switch database");
+      toast.error(error.message || "Failed to switch database");
     }
   };
 
@@ -65,7 +65,7 @@ export function DatabaseList({ databases }: { databases: Database[] }) {
             router.refresh();
           }
         } catch (error: any) {
-          toast.error(error.error || "Failed to delete database");
+          toast.error(error.message || "Failed to delete database");
         }
       },
     });

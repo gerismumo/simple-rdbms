@@ -43,7 +43,7 @@ export function TableSchemaModal({
     } catch (error: any) {
       notifications.show({
         title: "Error",
-        message: error.error || "Failed to load table schema",
+        message: error.message || "Failed to load table schema",
         color: "red",
       });
     } finally {

@@ -54,7 +54,7 @@ export function TableList({ onViewSchema }: TableListProps) {
             mutate();
           }
         } catch (error: any) {
-          toast.error(error.error || "Failed to drop table");
+          toast.error(error.message || "Failed to drop table");
         }
       },
     });

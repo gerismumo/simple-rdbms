@@ -72,7 +72,7 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
         onClose();
       }
     } catch (error: any) {
-      toast.error( error.error || 'Failed to create table')
+      toast.error( error.message || 'Failed to create table')
     } finally {
       setLoading(false);
     }
