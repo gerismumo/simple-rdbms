@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createDatabasesController } from "./databases.controller";
 import { DatabaseServiceState } from "../../shared/types/database";
 
-export default function databasesRoutes(state: DatabaseServiceState) {
+export default function databasesRoutes(state: DatabaseServiceState):Router {
   const router = Router();
   const controller = createDatabasesController(state);
 

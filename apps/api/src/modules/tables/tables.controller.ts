@@ -3,6 +3,7 @@ import { TablesService } from "./tables.service";
 import { CreateTableSchema } from "./dto/create-table.dto";
 import { DatabaseServiceState } from "../../shared/types/database";
 import { DatabaseData } from "../../core/types";
+import { DatabasesService } from "../databases/databases.service";
 
 type TablesControllerDeps = {
   state: DatabaseServiceState;
@@ -15,7 +16,10 @@ export const createTablesController = ({
 }: TablesControllerDeps) => {
   const create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const currentDb = getCurrentDb();
+      const { params } = req;
+      const database = params?.db;
+
+      const currentDb = await DatabasesService.switchTo(state, database);
 
       if (!currentDb) {
         return res.fail("No database selected", 400);
@@ -32,7 +36,10 @@ export const createTablesController = ({
 
   const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const currentDb = getCurrentDb();
+      const { params } = req;
+      const database = params?.db;
+
+      const currentDb = await DatabasesService.switchTo(state, database);
 
       if (!currentDb) {
         return res.fail("No database selected", 400);
@@ -48,13 +55,14 @@ export const createTablesController = ({
 
   const getSchema = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const currentDb = getCurrentDb();
+      const { params } = req;
+      const database = params?.db;
+
+      const currentDb = await DatabasesService.switchTo(state, database);
 
       if (!currentDb) {
         return res.fail("No database selected", 400);
       }
-
-      const { params } = req;
 
       const name = params?.name as string;
       const schema = await TablesService.getSchema(currentDb, name);
@@ -67,16 +75,17 @@ export const createTablesController = ({
 
   const drop = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const currentDb = getCurrentDb();
+      const { params } = req;
+      const database = params?.db;
+
+      const currentDb = await DatabasesService.switchTo(state, database);
 
       if (!currentDb) {
         return res.fail("No database selected", 400);
       }
 
-      const { params } = req;
-
       const name = params?.name as string;
-      
+
       await TablesService.drop(currentDb, state, name);
 
       return res.success(null, "Table dropped successfully");

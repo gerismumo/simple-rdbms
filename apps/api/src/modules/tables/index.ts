@@ -6,7 +6,7 @@ import { DatabaseData } from "../../core/types";
 export default function tablesModule(
   state: DatabaseServiceState,
   getCurrentDb: () => DatabaseData | null
-) {
+):Router {
   const router = Router();
   router.use(tablesRoutes(state, getCurrentDb));
   return router;

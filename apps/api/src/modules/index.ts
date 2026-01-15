@@ -8,7 +8,7 @@ import tablesModule from "./tables";
 export default function modules(
   state: DatabaseServiceState,
   getCurrentDb: () => DatabaseData | null
-) {
+):Router {
   const router = Router();
 
   router.use("/databases", databasesModule(state));

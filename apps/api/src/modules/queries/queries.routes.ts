@@ -6,7 +6,7 @@ import { createQueriesController } from "./queries.controller";
 export default function queriesRoutes(
   state: DatabaseServiceState,
   getCurrentDb: () => DatabaseData | null
-) {
+):Router {
   const router = Router();
   const controller = createQueriesController({ state, getCurrentDb });
 
