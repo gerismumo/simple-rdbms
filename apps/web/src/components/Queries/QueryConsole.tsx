@@ -13,8 +13,9 @@ import {
   Paper,
   Code,
   Box,
+  Alert,
 } from "@mantine/core";
-import { IconPlayerPlay, IconTrash } from "@tabler/icons-react";
+import { IconInfoCircle, IconPlayerPlay, IconTrash } from "@tabler/icons-react";
 import { useAppStore } from "../../store/useAppStore";
 import { queriesApi } from "../../lib/api/queries";
 import toast from "react-hot-toast";
@@ -71,6 +72,14 @@ export function QueryConsole() {
 
   return (
     <Stack gap="md">
+      <Alert
+        variant="light"
+        color="blue"
+        title="Alert"
+        icon={<IconInfoCircle />}
+      >
+        Select or Create database on the sidebar to execute queries
+      </Alert>
       <Card withBorder>
         <Stack gap="md">
           <Group justify="space-between">
@@ -86,7 +95,7 @@ export function QueryConsole() {
 
           <Textarea
             placeholder="Enter your SQL query here...
-Example: SELECT * FROM users WHERE id = 1"
+             Example: SELECT * FROM users WHERE id = 1"
             minRows={6}
             value={query}
             onChange={(e) => setQuery(e.currentTarget.value)}

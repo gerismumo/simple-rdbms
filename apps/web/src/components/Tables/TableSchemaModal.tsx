@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Modal, Table, Loader, Text, Stack, Badge, Group } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 import { TableSchema } from "../../types/api";
 import { tablesApi } from "../../lib/api/tables";
 import { useAppStore } from "../../store/useAppStore";
+import toast from "react-hot-toast";
 
 interface TableSchemaModalProps {
   opened: boolean;
@@ -41,11 +41,7 @@ export function TableSchemaModal({
         setSchema(response.data);
       }
     } catch (error: any) {
-      notifications.show({
-        title: "Error",
-        message: error.message || "Failed to load table schema",
-        color: "red",
-      });
+      toast.error(error.message || "Failed to load table schema");
     } finally {
       setLoading(false);
     }

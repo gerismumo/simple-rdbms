@@ -12,8 +12,9 @@ import {
   ScrollArea,
   ActionIcon,
   Tooltip,
+  Flex,
 } from "@mantine/core";
-import { IconEye, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconEye, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useAppStore } from "../../store/useAppStore";
 import { tablesApi } from "../../lib/api/tables";
@@ -129,7 +130,8 @@ export function TableViewer({ onViewSchema }: TableListProps) {
           <Loader />
         ) : data.length === 0 ? (
           <Text c="dimmed" ta="center">
-            No data available
+            No data available , please execute the insert query on the query
+            console
           </Text>
         ) : (
           <ScrollArea>
@@ -137,7 +139,14 @@ export function TableViewer({ onViewSchema }: TableListProps) {
               <Table.Thead>
                 <Table.Tr>
                   {columns.map((col) => (
-                    <Table.Th key={col.name}>{col.name}</Table.Th>
+                    <Table.Th key={col.name}>
+                      <Flex direction="row" align="center" gap="xs">
+                        {col.name}
+                        <Text size="xs" fw={400}>
+                          ({col.type})
+                        </Text>
+                      </Flex>
+                    </Table.Th>
                   ))}
                 </Table.Tr>
               </Table.Thead>
