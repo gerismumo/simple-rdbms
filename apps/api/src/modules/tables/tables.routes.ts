@@ -12,6 +12,7 @@ export default function tablesRoutes(
 
   router.post("/:db", controller.create);
   router.get("/:db", controller.getAll);
+  router.get("/:db/:name/rows", controller.getRows);
   router.get("/:db/:name/schema", controller.getSchema);
   router.delete("/:db/:name", controller.drop);
 

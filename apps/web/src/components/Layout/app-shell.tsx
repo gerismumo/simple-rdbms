@@ -16,7 +16,6 @@ import {
   IconDatabase,
   IconTable,
   IconTerminal,
-  IconChecklist,
 } from "@tabler/icons-react";
 
 import { DatabaseList } from "../Databases/DatabaseList";
@@ -30,7 +29,6 @@ interface AppShellLayoutProps {
   databases: Database[];
   activeTab: string;
   onTabChange: (tab: string) => void;
-
 }
 
 export function AppShellLayout({
@@ -41,15 +39,9 @@ export function AppShellLayout({
 }: AppShellLayoutProps) {
   const [opened, { toggle }] = useDisclosure();
   const [createDbOpened, setCreateDbOpened] = useState(false);
-  const { currentDatabase } = useAppStore();
-  const { data:tables, isLoading, mutate } = useTables();
-
-  console.log("data tables", tables)
-
-  const navItems = [
-    { label: "Query Console", icon: IconTerminal, value: "query" },
-    { label: "Tables", icon: IconTable, value: "tables" },
-  ];
+  const { currentDatabase, setSelectedTable } = useAppStore();
+  const { data: tables } = useTables();
+  const [tablesOpened, setTablesOpened] = useState(false);
 
   return (
     <>
@@ -99,16 +91,40 @@ export function AppShellLayout({
             <Text size="xs" tt="uppercase" fw={700} c="dimmed" mb="sm">
               Navigation
             </Text>
-            {navItems.map((item) => (
-              <NavLink
-                key={item.value}
-                active={activeTab === item.value}
-                label={item.label}
-                leftSection={<item.icon size={20} />}
-                onClick={() => onTabChange(item.value)}
-                mb={4}
-              />
-            ))}
+            <NavLink
+              active={activeTab === "query"}
+              label="Query Console"
+              leftSection={<IconTerminal size={20} />}
+              onClick={() => onTabChange("query")}
+              mb={4}
+            />
+            <NavLink
+              label="Tables"
+              leftSection={<IconTable size={20} />}
+              active={activeTab === "tables"}
+              opened={tablesOpened}
+              onClick={() => {
+                onTabChange("tables");
+                setTablesOpened((o) => !o);
+              }}
+            >
+              {!currentDatabase && (
+                <Text size="xs" c="dimmed" px="sm">
+                  Select a database
+                </Text>
+              )}
+
+              {tables?.map((table) => (
+                <NavLink
+                  key={table.name}
+                  label={table.name}
+                  onClick={() => {
+                    onTabChange("tables");
+                    setSelectedTable(table.name);
+                  }}
+                />
+              ))}
+            </NavLink>
           </AppShell.Section>
         </AppShell.Navbar>
 

@@ -33,6 +33,21 @@ export const TablesService = {
     return tables.map((name) => ({ name }));
   },
 
+  async getRows(db: DatabaseData, tableName: string): Promise<any> {
+    const table = getTable(db, tableName);
+
+    return {
+      name: table.schema.name,
+      columns: table.schema.columns.map((col) => ({
+        name: col.name,
+        type: col.type + (col.maxLength ? `(${col.maxLength})` : ""),
+        nullable: col.nullable ? "YES" : "NO",
+        key: col.primaryKey ? "PRI" : col.unique ? "UNI" : "",
+      })),
+      rows: table.rows,
+    };
+  },
+
   async getSchema(db: DatabaseData, tableName: string): Promise<any> {
     const table = getTable(db, tableName);
 

@@ -1,4 +1,4 @@
-import { CreateTableDto, Table, TableSchema } from "../../types/api";
+import { CreateTableDto, Table, TableRows, TableSchema } from "../../types/api";
 import { apiClient } from "../api-client";
 
 export const tablesApi = {
@@ -9,6 +9,9 @@ export const tablesApi = {
 
   getSchema: ({name, db}:{name: string; db: string}) =>
     apiClient.get<TableSchema>(`/tables/${db}/${name}/schema`),
+
+  getRows: ({name, db}:{name: string; db: string}) =>
+    apiClient.get<TableRows>(`/tables/${db}/${name}/rows`),
 
   drop: ({name, db}:{name: string, db: string}) => apiClient.delete(`/tables/${db}/${name}`),
 };

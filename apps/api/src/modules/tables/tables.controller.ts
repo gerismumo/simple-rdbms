@@ -53,6 +53,26 @@ export const createTablesController = ({
     }
   };
 
+  const getRows = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { params } = req;
+      const database = params?.db;
+
+      const currentDb = await DatabasesService.switchTo(state, database);
+
+      if (!currentDb) {
+        return res.fail("No database selected", 400);
+      }
+
+      const name = params?.name as string;
+      const data = await TablesService.getRows(currentDb, name);
+
+      return res.success(data);
+    } catch (err) {
+      next(err);
+    }
+  };
+
   const getSchema = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { params } = req;
@@ -99,5 +119,6 @@ export const createTablesController = ({
     getAll,
     getSchema,
     drop,
+    getRows
   };
 };

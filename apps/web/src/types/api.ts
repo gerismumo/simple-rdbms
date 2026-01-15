@@ -21,6 +21,12 @@ export interface TableSchema {
   rowCount: number;
 }
 
+export interface TableRows {
+  name: string;
+  columns: Column[];
+  rows: any[];
+}
+
 export interface Column {
   name: string;
   type: string;

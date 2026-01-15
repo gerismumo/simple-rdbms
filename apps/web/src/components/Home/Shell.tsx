@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Title, Text, Stack } from "@mantine/core";
+import { Container, Stack, Button, Flex } from "@mantine/core";
 import { useAppStore } from "../../store/useAppStore";
 import { QueryConsole } from "../Queries/QueryConsole";
-import { TableList } from "../Tables/TableList";
 import { AppShellLayout } from "../Layout/app-shell";
 import { CreateTableModal } from "../Tables/CreateTableModal";
 import { TableSchemaModal } from "../Tables/TableSchemaModal";
 import { Database } from "../../types/api";
+import { TableViewer } from "../Tables/TableViewer";
+import { IconPlus } from "@tabler/icons-react";
 
 export default function HomePage({ databases }: { databases: Database[] }) {
   const [activeTab, setActiveTab] = useState("query");
@@ -29,22 +30,17 @@ export default function HomePage({ databases }: { databases: Database[] }) {
       case "tables":
         return (
           <Stack gap="md">
-            <TableList onViewSchema={handleViewSchema} />
-            {currentDatabase && (
-              <button
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "var(--mantine-color-indigo-6)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-                onClick={() => setCreateTableOpened(true)}
-              >
-                Create New Table
-              </button>
-            )}
+            <Flex direction="row" justify="end">
+              {currentDatabase && (
+                <Button
+                  leftSection={<IconPlus size={16} />}
+                  onClick={() => setCreateTableOpened(true)}
+                >
+                  Create Table
+                </Button>
+              )}
+            </Flex>
+            <TableViewer onViewSchema={handleViewSchema} />
           </Stack>
         );
       default:
