@@ -1,4 +1,4 @@
-import express, {Express, Request, Response, NextFunction } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import requestLogger from "./shared/middlewares/requestLogger";
@@ -8,6 +8,7 @@ import path from "path";
 import { errorHandler } from "./shared/middlewares/errorHandler";
 import { DatabaseServiceState } from "./shared/types/database";
 import { DatabaseData } from "./core/types";
+import cors from "cors";
 
 export function createApp(
   state: DatabaseServiceState,
@@ -16,6 +17,15 @@ export function createApp(
   const app = express();
 
   app.use(helmet());
+
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      credentials: true,
+    })
+  );
+
   app.use(bodyParser.json({ limit: "5mb" }));
   app.use(requestLogger);
   app.use(responseHandler);

@@ -13,10 +13,10 @@ import {
   Badge,
 } from '@mantine/core';
 import { IconTable, IconTrash, IconEye, IconRefresh } from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import { useAppStore } from '../../store/useAppStore';
 import { tablesApi } from '../../lib/api/tables';
+import toast from 'react-hot-toast';
 
 
 interface TableListProps {
@@ -42,11 +42,8 @@ export function TableList({ onViewSchema }: TableListProps) {
         setTables(response.data);
       }
     } catch (error: any) {
-      notifications.show({
-        title: 'Error',
-        message: error.error || 'Failed to load tables',
-        color: 'red',
-      });
+      toast.error(error.error || 'Failed to load tables');
+     
     } finally {
       setLoading('tables', false);
     }
@@ -67,19 +64,11 @@ export function TableList({ onViewSchema }: TableListProps) {
         try {
           const response = await tablesApi.drop(tableName);
           if (response.success) {
-            notifications.show({
-              title: 'Success',
-              message: response.message || 'Table dropped successfully',
-              color: 'green',
-            });
+            toast.success(response.message || 'Table dropped successfully');
             loadTables();
           }
         } catch (error: any) {
-          notifications.show({
-            title: 'Error',
-            message: error.error || 'Failed to drop table',
-            color: 'red',
-          });
+          toast.error( error.error || 'Failed to drop table')
         }
       },
     });

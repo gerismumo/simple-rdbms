@@ -22,15 +22,19 @@ import {
 import { DatabaseList } from "../Databases/DatabaseList";
 import { useAppStore } from "../../store/useAppStore";
 import { CreateDatabaseModal } from "../Databases/CreateDatabaseModal";
+import { Database } from "../../types/api";
 
 interface AppShellLayoutProps {
   children: React.ReactNode;
+  databases: Database[];
   activeTab: string;
   onTabChange: (tab: string) => void;
+
 }
 
 export function AppShellLayout({
   children,
+  databases,
   activeTab,
   onTabChange,
 }: AppShellLayoutProps) {
@@ -41,7 +45,6 @@ export function AppShellLayout({
   const navItems = [
     { label: "Query Console", icon: IconTerminal, value: "query" },
     { label: "Tables", icon: IconTable, value: "tables" },
-    { label: "Tasks", icon: IconChecklist, value: "tasks" },
   ];
 
   return (
@@ -64,7 +67,7 @@ export function AppShellLayout({
                 hiddenFrom="sm"
                 size="sm"
               />
-              <IconDatabase size={28} color="var(--mantine-color-indigo-6)" />
+              <IconDatabase size={28} />
               <Text size="xl" fw={700}>
                 MyRDBMS
               </Text>
@@ -76,7 +79,6 @@ export function AppShellLayout({
             )}
           </Group>
         </AppShell.Header>
-
         <AppShell.Navbar p="md">
           <AppShell.Section>
             <Group justify="space-between" mb="md">
@@ -87,9 +89,8 @@ export function AppShellLayout({
                 New
               </Button>
             </Group>
-            <DatabaseList />
+            <DatabaseList databases={databases} />
           </AppShell.Section>
-
           <AppShell.Section grow component={ScrollArea} mt="md">
             <Text size="xs" tt="uppercase" fw={700} c="dimmed" mb="sm">
               Navigation

@@ -16,9 +16,9 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
 import { ColumnDefinition } from '../../types/api';
 import { tablesApi } from '../../lib/api/tables';
+import toast from 'react-hot-toast';
 
 
 interface CreateTableModalProps {
@@ -58,21 +58,13 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
     try {
       const response = await tablesApi.create(values);
       if (response.success) {
-        notifications.show({
-          title: 'Success',
-          message: response.message || 'Table created successfully',
-          color: 'green',
-        });
+        toast.success(response.message || 'Table created successfully');
         form.reset();
         onSuccess();
         onClose();
       }
     } catch (error: any) {
-      notifications.show({
-        title: 'Error',
-        message: error.error || 'Failed to create table',
-        color: 'red',
-      });
+      toast.error( error.error || 'Failed to create table')
     } finally {
       setLoading(false);
     }

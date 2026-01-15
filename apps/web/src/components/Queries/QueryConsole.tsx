@@ -15,32 +15,27 @@ import {
   Box,
 } from "@mantine/core";
 import { IconPlayerPlay, IconTrash } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
 import { useAppStore } from "../../store/useAppStore";
 import { queriesApi } from "../../lib/api/queries";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function QueryConsole() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<any>(null);
   const [history, setHistory] = useState<string[]>([]);
   const { currentDatabase, loading, setLoading } = useAppStore();
+  const router = useRouter();
 
   const executeQuery = async () => {
     if (!query.trim()) {
-      notifications.show({
-        title: "Warning",
-        message: "Please enter a SQL query",
-        color: "yellow",
-      });
+      toast.error("Please enter a SQL query");
       return;
     }
 
     if (!currentDatabase) {
-      notifications.show({
-        title: "Warning",
-        message: "Please select a database first",
-        color: "yellow",
-      });
+      toast.error("Please select a database first");
+
       return;
     }
 
@@ -52,19 +47,14 @@ export function QueryConsole() {
         setResult(response.data);
         setHistory((prev) => [query, ...prev].slice(0, 10));
 
-        notifications.show({
-          title: "Success",
-          message: response.message || "Query executed successfully",
-          color: "green",
-        });
+        toast.success(response.message || "Query executed successfully");
+
+        router.refresh();
       }
     } catch (error: any) {
-      notifications.show({
-        title: "Error",
-        message: error.error || "Failed to execute query",
-        color: "red",
-      });
-      setResult({ error: error.error || "Query failed" });
+      toast.error(error.message || "Failed to execute query");
+
+      setResult({ error: error.message || "Query failed" });
     } finally {
       setLoading("query", false);
     }
@@ -128,8 +118,6 @@ Example: SELECT * FROM users WHERE id = 1"
           </Group>
         </Stack>
       </Card>
-
-      {/* Query Results */}
       {result && (
         <Card withBorder>
           <Stack gap="md">
@@ -201,7 +189,6 @@ Example: SELECT * FROM users WHERE id = 1"
         </Card>
       )}
 
-      {/* Query History */}
       {history.length > 0 && (
         <Card withBorder>
           <Stack gap="md">
@@ -226,14 +213,17 @@ Example: SELECT * FROM users WHERE id = 1"
           </Stack>
         </Card>
       )}
-
-      {/* SQL Examples */}
       <Card withBorder bg="gray.0">
         <Stack gap="sm">
           <Text size="sm" fw={600}>
             SQL Examples
           </Text>
           <Stack gap="xs">
+            <Code block style={{ fontSize: "12px" }}>
+              -- Create table{"\n"}
+              CREATE TABLE users (id INTEGER PRIMARY KEY, name VARCHAR(100),
+              email VARCHAR(255) UNIQUE);
+            </Code>
             <Code block style={{ fontSize: "12px" }}>
               -- Select all rows{"\n"}
               SELECT * FROM users;

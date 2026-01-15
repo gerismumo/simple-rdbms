@@ -8,9 +8,10 @@ import { TableList } from '../Tables/TableList';
 import { AppShellLayout } from '../Layout/app-shell';
 import { CreateTableModal } from '../Tables/CreateTableModal';
 import { TableSchemaModal } from '../Tables/TableSchemaModal';
+import { Database } from '../../types/api';
 
 
-export default function HomePage() {
+export default function HomePage({databases}: {databases: Database[]}) {
   const [activeTab, setActiveTab] = useState('query');
   const [createTableOpened, setCreateTableOpened] = useState(false);
   const [schemaModalOpened, setSchemaModalOpened] = useState(false);
@@ -60,8 +61,6 @@ export default function HomePage() {
             )}
           </Stack>
         );
-      case 'tasks':
-        // return <TasksPage />;
       default:
         return null;
     }
@@ -69,7 +68,7 @@ export default function HomePage() {
 
   return (
     <>
-      <AppShellLayout activeTab={activeTab} onTabChange={setActiveTab}>
+      <AppShellLayout databases={databases} activeTab={activeTab} onTabChange={setActiveTab}>
         <Container>{renderContent()}</Container>
       </AppShellLayout>
 

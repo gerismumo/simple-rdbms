@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Card,
   Text,
@@ -11,112 +11,65 @@ import {
   Button,
   Loader,
   Box,
-} from '@mantine/core';
+} from "@mantine/core";
 import {
   IconDatabase,
   IconTrash,
   IconCheck,
   IconRefresh,
-} from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
-import { modals } from '@mantine/modals';
-import { useAppStore } from '../../store/useAppStore';
-import { databasesApi } from '../../lib/api/databases';
+} from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
+import { useAppStore } from "../../store/useAppStore";
+import { databasesApi } from "../../lib/api/databases";
+import toast from "react-hot-toast";
+import { Database } from "../../types/api";
+import { useRouter } from "next/navigation";
 
+export function DatabaseList({ databases }: { databases: Database[] }) {
+  console.log("DatabaseList data:", databases);
+  const router = useRouter();
 
-export function DatabaseList() {
-  const { databases, setDatabases, currentDatabase, setCurrentDatabase, loading, setLoading } =
-    useAppStore();
-  const [localLoading, setLocalLoading] = useState(false);
-
-  useEffect(() => {
-    loadDatabases();
-  }, []);
-
-  const loadDatabases = async () => {
-    setLoading('databases', true);
-    try {
-      const response = await databasesApi.getAll();
-      if (response.success && response.data) {
-        setDatabases(response.data);
-      }
-    } catch (error: any) {
-      notifications.show({
-        title: 'Error',
-        message: error.error || 'Failed to load databases',
-        color: 'red',
-      });
-    } finally {
-      setLoading('databases', false);
-    }
-  };
+  const { currentDatabase, setCurrentDatabase } = useAppStore();
 
   const handleSwitch = async (dbName: string) => {
-    setLocalLoading(true);
     try {
       const response = await databasesApi.switchTo(dbName);
       if (response.success) {
         setCurrentDatabase(dbName);
-        notifications.show({
-          title: 'Success',
-          message: response.message || `Switched to ${dbName}`,
-          color: 'green',
-        });
+        toast.success(response.message || `Switched to ${dbName}`);
       }
     } catch (error: any) {
-      notifications.show({
-        title: 'Error',
-        message: error.error || 'Failed to switch database',
-        color: 'red',
-      });
-    } finally {
-      setLocalLoading(false);
+      toast.error(error.error || "Failed to switch database");
     }
   };
 
   const handleDelete = (dbName: string) => {
     modals.openConfirmModal({
-      title: 'Delete Database',
+      title: "Delete Database",
       children: (
         <Text size="sm">
-          Are you sure you want to delete database <strong>{dbName}</strong>? This action cannot be
-          undone.
+          Are you sure you want to delete database <strong>{dbName}</strong>?
+          This action cannot be undone.
         </Text>
       ),
-      labels: { confirm: 'Delete', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
       onConfirm: async () => {
         try {
           const response = await databasesApi.delete(dbName);
           if (response.success) {
-            notifications.show({
-              title: 'Success',
-              message: response.message || 'Database deleted',
-              color: 'green',
-            });
+            toast.success(response.message || "Database deleted");
             if (currentDatabase === dbName) {
               setCurrentDatabase(null);
             }
-            loadDatabases();
+            router.refresh();
           }
         } catch (error: any) {
-          notifications.show({
-            title: 'Error',
-            message: error.error || 'Failed to delete database',
-            color: 'red',
-          });
+          toast.error(error.error || "Failed to delete database");
         }
       },
     });
   };
-
-  if (loading.databases) {
-    return (
-      <Box p="xl" style={{ textAlign: 'center' }}>
-        <Loader size="md" />
-      </Box>
-    );
-  }
 
   return (
     <Stack gap="md">
@@ -124,9 +77,13 @@ export function DatabaseList() {
         <Text size="lg" fw={600}>
           Databases
         </Text>
-        <ActionIcon variant="light" onClick={loadDatabases} disabled={localLoading}>
+        {/* <ActionIcon
+          variant="light"
+          onClick={loadDatabases}
+          disabled={localLoading}
+        >
           <IconRefresh size={18} />
-        </ActionIcon>
+        </ActionIcon> */}
       </Group>
 
       {databases.length === 0 ? (
@@ -143,9 +100,11 @@ export function DatabaseList() {
               withBorder
               padding="sm"
               style={{
-                cursor: 'pointer',
+                cursor: "pointer",
                 backgroundColor:
-                  currentDatabase === db.name ? 'var(--mantine-color-indigo-0)' : undefined,
+                  currentDatabase === db.name
+                    ? "var(--mantine-color-indigo-0)"
+                    : undefined,
               }}
               onClick={() => handleSwitch(db.name)}
             >
@@ -157,7 +116,7 @@ export function DatabaseList() {
                       {db.name}
                     </Text>
                     <Text size="xs" c="dimmed">
-                      {db.tables} table{db.tables !== 1 ? 's' : ''}
+                      {db.tables} table{db.tables !== 1 ? "s" : ""}
                     </Text>
                   </div>
                 </Group>
