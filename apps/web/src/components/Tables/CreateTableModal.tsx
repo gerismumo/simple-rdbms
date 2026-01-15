@@ -20,6 +20,8 @@ import { ColumnDefinition } from '../../types/api';
 import { tablesApi } from '../../lib/api/tables';
 import toast from 'react-hot-toast';
 import { useAppStore } from '../../store/useAppStore';
+import { useTables } from '../../lib/hook/useTable';
+import { useRouter } from 'next/navigation';
 
 
 interface CreateTableModalProps {
@@ -31,6 +33,8 @@ interface CreateTableModalProps {
 export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModalProps) {
    const {  currentDatabase } = useAppStore();
   const [loading, setLoading] = useState(false);
+  const {mutate} = useTables()
+  const router = useRouter()
 
   const form = useForm({
     initialValues: {
@@ -62,6 +66,8 @@ export function CreateTableModal({ opened, onClose, onSuccess }: CreateTableModa
       if (response.success) {
         toast.success(response.message || 'Table created successfully');
         form.reset();
+        mutate()
+        router.refresh()
         onSuccess();
         onClose();
       }
