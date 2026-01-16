@@ -27,6 +27,9 @@ RUN turbo prune web --docker
 # ---
 FROM base AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
+
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 # First install the dependencies (as they change less often)
 COPY --from=prepare /app/out/json/ .
 RUN pnpm install

@@ -22,12 +22,12 @@ async function server() {
 
   registerShutdown(state);
 
-  app.listen(ENV.PORT, ENV.HOST_NAME, () => {
+  app.listen(ENV.PORT ,() => {
     console.log(`
       MyRDBMS Server - Modular Architecture
 
-      Server:     http://${ENV.HOST_NAME}:${ENV.PORT}
-      API:        http://${ENV.HOST_NAME}:${ENV.PORT}/api/v1
+      Server:     http://locahost:${ENV.PORT}
+      API:        http://locahost:${ENV.PORT}/api/v1
       Data Path:  ${ENV.DATA_PATH.padEnd(43)}
       Database:   ${(currentDatabase?.name || "none").padEnd(43)}
       Tables:     ${
