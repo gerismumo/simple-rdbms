@@ -142,7 +142,7 @@ Import the provided Postman collection for testing:
 
 1. Open Postman
 2. Click **Import**
-3. Paste the collection JSON (provided in documentation)
+3. Paste the collection JSON (provided in ./docs folder in the repo) 
 4. Set variable `API_URL` to `http://localhost:3001/api/v1`
 
 

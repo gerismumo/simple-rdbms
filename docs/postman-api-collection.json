@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "5572c7d6-b50b-49f5-b5dc-2fb29971353e",
+		"name": "simple-rdbms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29773208"
+	},
+	"item": [
+		{
+			"name": "queries",
+			"item": [
+				{
+					"name": "execute-query",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sql\": \"SELECT * FROM tasks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/query",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tables",
+			"item": [
+				{
+					"name": "get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testdb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/tables/myapp",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"tables",
+								"myapp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"users\",\r\n    \"columns\": [\r\n        {\r\n            \"name\": \"id\",\r\n            \"type\": \"INTEGER\",\r\n            \"primaryKey\": true,\r\n            \"nullable\": false\r\n        },\r\n        {\r\n            \"name\": \"email\",\r\n            \"type\": \"VARCHAR\",\r\n            \"unique\": true,\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"password\",\r\n            \"type\": \"VARCHAR\",\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"is_active\",\r\n            \"type\": \"BOOLEAN\",\r\n            \"nullable\": true\r\n        },\r\n        {\r\n            \"name\": \"balance\",\r\n            \"type\": \"FLOAT\",\r\n            \"nullable\": true\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/tables",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"tables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "schema",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"users\",\r\n    \"columns\": [\r\n        {\r\n            \"name\": \"id\",\r\n            \"type\": \"INTEGER\",\r\n            \"primaryKey\": true,\r\n            \"nullable\": false\r\n        },\r\n        {\r\n            \"name\": \"email\",\r\n            \"type\": \"VARCHAR\",\r\n            \"unique\": true,\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"password\",\r\n            \"type\": \"VARCHAR\",\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"is_active\",\r\n            \"type\": \"BOOLEAN\",\r\n            \"nullable\": true\r\n        },\r\n        {\r\n            \"name\": \"balance\",\r\n            \"type\": \"FLOAT\",\r\n            \"nullable\": true\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/tables/users/schema",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"tables",
+								"users",
+								"schema"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drop",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"users\",\r\n    \"columns\": [\r\n        {\r\n            \"name\": \"id\",\r\n            \"type\": \"INTEGER\",\r\n            \"primaryKey\": true,\r\n            \"nullable\": false\r\n        },\r\n        {\r\n            \"name\": \"email\",\r\n            \"type\": \"VARCHAR\",\r\n            \"unique\": true,\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"password\",\r\n            \"type\": \"VARCHAR\",\r\n            \"nullable\": false,\r\n            \"maxLength\": 255\r\n        },\r\n        {\r\n            \"name\": \"is_active\",\r\n            \"type\": \"BOOLEAN\",\r\n            \"nullable\": true\r\n        },\r\n        {\r\n            \"name\": \"balance\",\r\n            \"type\": \"FLOAT\",\r\n            \"nullable\": true\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/tables/users",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"tables",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rows",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "database",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/databases",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"databases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testdb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/databases",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"databases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyname",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testdb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/databases/testdb",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"databases",
+								"testdb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "use",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testdb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/databases/use",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"databases",
+								"use"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"testdb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/databases/testdb",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"databases",
+								"testdb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": ""
+		}
+	]
+}
