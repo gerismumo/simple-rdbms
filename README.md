@@ -34,6 +34,9 @@ cd myrdbms
 ### 2. Install Dependencies
 
 ```bash
+#install turbo globally
+npm install turbo --global
+
 # Install pnpm globally (if not already installed)
 npm install -g pnpm
 
