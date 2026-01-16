@@ -245,9 +245,9 @@ curl -X POST http://localhost:3001/api/v1/query \
 ```json
 {
   "success": true,
+  "statusCode": 200
   "message": "Operation successful",
   "data": { },
-  "statusCode": 200
 }
 ```
 
@@ -255,23 +255,8 @@ curl -X POST http://localhost:3001/api/v1/query \
 ```json
 {
   "success": false,
-  "error": "Error message",
   "statusCode": 400
-}
-```
-
-### Validation Error (Zod)
-```json
-{
-  "success": false,
-  "error": "Validation failed",
-  "details": [
-    {
-      "path": ["name"],
-      "message": "Required"
-    }
-  ],
-  "statusCode": 400
+  "message": "Error message",
 }
 ```
 
