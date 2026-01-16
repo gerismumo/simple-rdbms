@@ -29,7 +29,7 @@ function required(name: string): string {
 export const ENV = {
   NODE_ENV,
   HOST_NAME: process.env.HOST_NAME || "localhost",
-  PORT: parseInt(required("PORT"), 10),
+  PORT: parseInt(process.env.PORT ?? "3001", 10),
   BASE_URL: process.env.BASE_URL || `http://localhost:${process.env.PORT}`,
   DATA_PATH: process.env.DATA_PATH || "./data",
 } as const;

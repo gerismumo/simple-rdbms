@@ -49,6 +49,9 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 expressjs
 RUN adduser --system --uid 1001 expressjs
 
+RUN mkdir -p /app/data && \
+    chown -R expressjs:expressjs /app/data && \
+    chmod -R 755 /app/data
 
 USER expressjs
 COPY --from=builder /app .
